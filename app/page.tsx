@@ -17,6 +17,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 export default function Home() {
   return (
     <>
+    
       <StickyHeader className="px-4 py-2">
         <div className="flex justify-between items-center">
           Convex + Next.js + Clerk
@@ -34,6 +35,7 @@ export default function Home() {
           <p>Click one of the buttons in the top right corner to sign in.</p>
         </Unauthenticated>
       </main>
+      
     </>
   );
 }
