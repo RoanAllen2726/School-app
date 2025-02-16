@@ -76,3 +76,23 @@ export const myAction = action({
     });
   },
 });
+
+// Mutation to register a user
+export const registerUser = mutation(async ({ db }, { userId, classroomCode, role }) => {
+  await db.insert('users', { userId, classroomCode, role });
+});
+
+// Mutation to create a task
+export const createTask = mutation(async ({ db }, { classroomCode, taskContent }) => {
+  await db.insert('tasks', { classroomCode, taskContent, createdAt: Date.now() });
+});
+
+// Query to fetch tasks
+export const getTasks = query(async ({ db }, { classroomCode }) => {
+  return await db
+    .query('tasks')
+    .filter((q) => q.eq(q.field('classroomCode'), classroomCode))
+    .orderBy('createdAt', 'desc')
+    .collect();
+});
+

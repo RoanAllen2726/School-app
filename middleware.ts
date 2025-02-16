@@ -1,6 +1,6 @@
-import { clerkMiddleware } from '@clerk/nextjs/server'
+import { NextResponse } from "next/server";
+import { getAuth } from "@clerk/nextjs/server";
 
-export default clerkMiddleware()
 
 export const config = {
   matcher: [
@@ -9,4 +9,18 @@ export const config = {
     // Always run for API routes
     '/(api|trpc)(.*)',
   ],
+};
+
+import { clerkClient } from '@clerk/nextjs';
+
+export async function middleware(req: NextRequest) {
+  const token = req.headers.get('Authorization');
+  const user = token ? await clerkClient.users.getUser(token) : null;
+
+  if (!user || !['teacher', 'student'].includes(user.publicMetadata.role)) {
+    return new NextResponse('Unauthorized', { status: 403 });
+  }
+
+  return NextResponse.next();
 }
+
